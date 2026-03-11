@@ -1,5 +1,5 @@
 :root {
-    --primary: #85BAA1;
+    --primary: #78B397;
     --on-primary: #FFFFFF;
     --primary-container: #D1E6DC;
     --on-primary-container: #25332C;
@@ -23,6 +23,7 @@
     --on-surface-variant: #606663;
     --outline: #909995;
     --icon: #F2C94C;
+    --shadow: #909995;
 
     --header-height: 64px;
     --footer-height: 48px;
@@ -55,4 +56,5 @@
     --on-surface-variant: #e0e6e3;
     --outline: #acb3b0;
     --icon: #98ccf6;
+    --shadow: #181a19;
 }

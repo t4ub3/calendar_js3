@@ -62,7 +62,7 @@ custom-card {
     max-width: 800px;
     padding: 16px;
     border-radius: 4px;
-    box-shadow: 0 2px 4px 0 black;
+    box-shadow: 0 2px 4px 0 var(--shadow);
     background-color: var(--background);
 }
 
@@ -78,7 +78,7 @@ custom-card dd:last-child {
     max-width: 800px;
     padding: 16px;
     border-radius: 4px;
-    box-shadow: 0 2px 4px 0 black;
+    box-shadow: 0 2px 4px 0 var(--shadow);
     background-color: var(--background);
 }
 
@@ -104,6 +104,7 @@ custom-card dd:last-child {
 
 .card__text--light {
     font-family: 'FunnelSans-Italic';
+    font-weight: 500;
     color: var(--primary);
 }
 
