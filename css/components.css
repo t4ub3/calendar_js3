@@ -66,6 +66,13 @@ custom-card {
     background-color: var(--background);
 }
 
+custom-card dd {
+    padding-bottom: 8px;
+}
+custom-card dd:last-child {
+    padding-bottom: 0;
+}
+
 .card {
     width: 80%;
     max-width: 800px;

@@ -1,30 +1,31 @@
 const API_BASE_URL = "https://history.muffinlabs.com/date";
 
-const historicCard = document.getElementById('historic-card');
+//const historicCard = document.getElementById('historic-card');
 
 function loadHistoricEvents() {
     const url = buildUrl("");
     let data = fetchHistoricEvents(url);
 }
 
+
+//API call
 function fetchHistoricEvents(url) {
     fetch(url)
         .then(response => {
             if (!response.ok) {
-                historicCard.innerText = "Daten konnten nicht geladen werden.";
                 throw new Error('Network response was not ok');
             }
             return response.json();
         })
         .then(data => {
-            historicCard.innerText = JSON.stringify(data);
+            displayData(data);
         })
         .catch(error => {
-            historicCard.innerText = "Daten konnten nicht geladen werden.";
             console.error('Error:', error);
         });
 }
 
+// build the url string for a given date
 function buildUrl(date) {
     if (!isValidDate(date)) {
         return `${API_BASE_URL}/1/1`;
@@ -38,8 +39,55 @@ function isValidDate(value) {
     return value instanceof Date && !isNaN(value);
 }
 
-function parseData() {
+// filters the data and renders it on the website
+function displayData(data) {
+    let events = pickRandom(5, data.data.Events);
+    let birthdays = pickRandom(5, data.data.Births);
+    let deaths = pickRandom(5, data.data.Deaths);
+    renderCard("Historische Ereignisse", events);
+    renderCard("Todestage", deaths);
+    renderCard("Geburtstage", birthdays);
+}
 
+//renders a card at the end of the website
+function renderCard(name, data) {
+    let card = document.createElement("custom-card");
+    card.title = name;
+
+    let list = document.createElement("dl");
+    data.forEach(el => {
+        let date = document.createElement("dt");
+        date.classList.add("card__text--light");
+        date.innerHTML = el.year;
+        list.appendChild(date);
+        let text = document.createElement("dd");
+        text.innerHTML = el.text;
+        list.appendChild(text);
+    });
+    card.appendChild(list);
+    const mainLayout = document.getElementById("main-layout");
+    const referenceNode = mainLayout.children[2];
+    if (referenceNode) {
+        mainLayout.insertBefore(card, referenceNode);
+    } else {
+        mainLayout.appendChild(card);
+    }
+}
+
+// select n random elements from a list 
+function pickRandom(amount, list) {
+    if (!Array.isArray(list)) {
+        throw new TypeError("First argument must be an array.");
+    }
+    if (typeof amount !== "number" || amount < 0 || !Number.isInteger(amount)) {
+        throw new TypeError("Second argument must be a non-negative integer.");
+    }
+    if (amount > list.length) {
+        return list;
+    }
+
+    const shuffled = [...list].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, amount);
 }
 
 loadHistoricEvents();
