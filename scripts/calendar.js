@@ -21,7 +21,29 @@ const elements = {
     body: document.getElementById("holds-background"),
     calendarSheetTitle: document.getElementById("calendar-sheet-title"),
     calendarSheetCells: document.getElementById("cal-sheet-cells")
+}
+let selectedDate;
 
+let firstOfMonth;
+let firstMonday;
+let lastOfPreviousMonth;
+let firstOfNextMonth;
+let lastOfCurrentMonth;
+
+const calendarCells = new Array(48).fill(1);
+
+function setBasicDataForSheet() {
+    firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    firstMonday = calcfirstMonday();
+    lastOfPreviousMonth = new Date(firstOfMonth.valueOf() - 86400000);
+    firstOfNextMonth = (today.getMonth() === 11) ? new Date(today.getFullYear() + 1, 1, 1) : new Date(today.getFullYear(), today.getMonth() + 1, 1);
+    lastOfCurrentMonth = new Date(firstOfNextMonth.valueOf() - 86400000);
+}
+
+function calcfirstMonday() {
+    let factor = (firstOfMonth.getDay() + 6) % 7;
+    let date = new Date(firstOfMonth.valueOf() - (86400000 * factor));
+    return date;
 }
 
 function getWeekNr(date) {
@@ -49,24 +71,26 @@ function setToday() {
     setupCalendarSheet();
 }
 
+function setDay(date) {
+    if (!isValidDate(date)) {
+        throw new Error("not a valid date");
+    }
+
+}
+
+function isValidDate(value) {
+    return value instanceof Date && !isNaN(value);
+}
+
 function isPrime(dateNumber) {
     return (dateNumber in [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]);
 }
 
 function setupCalendarSheet() {
 
-    function calcfirstMonday() {
-        let factor = (firstOfMonth.getDay() + 6) % 7;
-        let date = new Date(firstOfMonth.valueOf() - (86400000 * factor));
-        return date;
-    }
 
-    const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    const firstMonday = calcfirstMonday();
-    const lastOfPreviousMonth = new Date(firstOfMonth.valueOf() - 86400000);
-    const firstOfNextMonth = (today.getMonth() === 11) ? new Date(today.getFullYear() + 1, 1, 1) : new Date(today.getFullYear(), today.getMonth() + 1, 1);
-    const lastOfCurrentMonth = new Date(firstOfNextMonth.valueOf() - 86400000);
-    const calendarCells = new Array(48).fill(1);
+
+    setBasicDataForSheet();
 
     let totalCount = 0;
     let weekCount = getWeekNr(firstMonday);
@@ -146,4 +170,6 @@ function setupCalendarSheet() {
 }
 
 const today = new Date(Date.now());
+selectedDate = today;
+
 setToday();
